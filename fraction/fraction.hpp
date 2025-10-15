@@ -1,5 +1,5 @@
-#ifndef FRACTION_H
-#define FRACTION_H
+#ifndef FRACTION_HPP
+#define FRACTION_HPP
 #include <iostream>
 using namespace std;
 int gcd(int a, int b) {
@@ -35,7 +35,7 @@ public:
     void print() {
         cout << num << "/" << den;
     }
-    fraction operator+(fraction f2) {
+    fraction operator+(const fraction& f2) const {
         fraction f3(0, 0);
         int temp1, temp2;
         f3.den = lcm(this->den, f2.den);
@@ -44,7 +44,7 @@ public:
         f3.reduce();
         return f3;
     }
-    fraction operator-(fraction f2) {
+    fraction operator-(const fraction& f2) const {
         fraction f3(0, 0);
         int temp1, temp2;
         f3.den = lcm(this->den, f2.den);
@@ -53,29 +53,30 @@ public:
         f3.reduce();
         return f3;
     }
-    fraction operator*(fraction f2) {
+    fraction operator*(const fraction& f2) const {
         fraction f3(0, 0);
         f3.num = this->num * f2.num;
         f3.den = this->den * f2.den;
         f3.reduce();
         return f3;
     }
-    fraction operator/(fraction f2) {
+    fraction operator/(const fraction& f2) const {
         fraction f3(0, 0);
         f3.num = this->num * f2.den;
         f3.den = this->den * f2.num;
         f3.reduce();
         return f3;
     }
-    bool operator==(fraction f2) {
-        this->reduce();
-        f2.reduce();
-        return (this->num == f2.num && this->den == f2.den);
+    friend fraction operator-(const fraction& f1) {
+        return fraction(-f1.num, f1.den);
     }
-    bool operator!=(fraction f2) {
+    bool operator==(const fraction& f2) const {
+        return (this->num * f2.den == f2.num * this->den);
+    }
+    bool operator!=(const fraction& f2) const {
         return !(*this == f2);
     }
-    bool operator<(fraction f2) {
+    bool operator<(const fraction& f2) const {
         if(this->den == f2.den) {
             return this->num < f2.num;
         } else {
@@ -86,7 +87,7 @@ public:
             }
         }
     }
-    bool operator<=(fraction f2) {
+    bool operator<=(const fraction& f2) const {
         if(this->den == f2.den) {
             return this->num <= f2.num;
         } else {
@@ -97,7 +98,7 @@ public:
             }
         }
     }
-    bool operator>(fraction f2) {
+    bool operator>(const fraction& f2) const {
         if(this->den == f2.den) {
             return this->num > f2.num;
         } else {
@@ -108,7 +109,7 @@ public:
             }
         }
     }
-    bool operator>=(fraction f2) {
+    bool operator>=(const fraction& f2) const {
         if(this->den == f2.den) {
             return this->num >= f2.num;
         } else {
